@@ -5,7 +5,7 @@
 
 
 # 构建
-进入项目文件夹，使用 cargo 命令构建
+进入项目文件夹，使用 cargo 命令构建，构建的 wasm 程序在 `target/wasm32-wasi/release/wasm-plugin.wasm`
 
 ```bash
 cargo build --target wasm32-wasi --release
