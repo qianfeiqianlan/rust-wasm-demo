@@ -50,7 +50,7 @@ fn get_user_authorization() -> Result<String, Error> {
 }
 
 #[no_mangle]
-pub extern "C" fn plugin_name(input: *const u8, len: usize) -> *const u32 {
+pub extern "C" fn wasm_pg_conn(input: *const u8, len: usize) -> *const u32 {
     if input.is_null() || len == 0 {
         return std::ptr::null_mut();
     }
