@@ -1,7 +1,7 @@
 use std::ffi::CString;
 
 #[no_mangle]
-pub extern "C" fn plugin_name(_input: *const u8, _len: usize) -> *const u32 {
+pub extern "C" fn wasm_hello(_input: *const u8, _len: usize) -> *const u32 {
     let cstring = match CString::new("hello world!".to_owned()) {
         Ok(cstr) => cstr,
         Err(_) => return std::ptr::null_mut(),
