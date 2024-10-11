@@ -67,6 +67,8 @@ pub extern "C" fn wasm_pg_conn(input: *const u8, len: usize) -> *const u32 {
         Err(_) => "error".to_owned(),
     };
 
+    let mut code = "200";
+
     let res_json = match serde_json::from_str::<Value>(string) {
         Ok(v) => {
             let request_authorization = v["headers"].as_object().unwrap()["authorization"]
@@ -96,12 +98,16 @@ pub extern "C" fn wasm_pg_conn(input: *const u8, len: usize) -> *const u32 {
                     headers_authorization: "authorization fail".to_string(),
                     body: serde_json::to_string(&body).unwrap(),
                 };
+                code = "401";
                 serde_json::to_string(&res).unwrap()
             }
         }
-        Err(_) => "not a valid json string".to_owned(),
+        Err(_) => {
+            code = "500";
+            "not a valid json string".to_owned()
+        },
     };
-
+    let res_json = code.to_owned() + &res_json;
     let cstring = match CString::new(res_json) {
         Ok(cstr) => cstr,
         Err(_) => return std::ptr::null_mut(),
